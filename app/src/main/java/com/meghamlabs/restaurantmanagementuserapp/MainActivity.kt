@@ -26,6 +26,8 @@ class MainActivity : AppCompatActivity(), TotalQuantityListener {
     private lateinit var spinner:Spinner
     private lateinit var button_down: ImageView
     private lateinit var button_up: ImageView
+    val database = Firebase.database
+    val orderRef = database.getReference("orders")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,7 +35,7 @@ class MainActivity : AppCompatActivity(), TotalQuantityListener {
         setContentView(binding.root)
 
         binding.confirmButton.setOnClickListener{
-            buttomConfirmPressed()
+            buttonConfirmPressed()
         }
 
         button_down = binding.downArrow
@@ -90,7 +92,7 @@ class MainActivity : AppCompatActivity(), TotalQuantityListener {
 
     }
 
-    private fun buttomConfirmPressed() {
+    private fun buttonConfirmPressed() {
 
         val tableNumber = spinner.selectedItem as Int
 
@@ -100,6 +102,8 @@ class MainActivity : AppCompatActivity(), TotalQuantityListener {
         for (food in adapter.foodList) {
             if (food.quantity > 0) {
                 foodList.add(Food(food.name,food.quantity))
+                val order = Order(tableNumber, food.name, food.quantity)
+                orderRef.push().setValue(order)
             }
         }
 
