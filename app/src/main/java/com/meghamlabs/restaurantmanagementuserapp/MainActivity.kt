@@ -93,25 +93,30 @@ class MainActivity : AppCompatActivity(), TotalQuantityListener {
     }
 
     private fun buttonConfirmPressed() {
-
         val tableNumber = spinner.selectedItem as Int
+        val key = orderRef.push().key!!
+
+        // Create a list to store all the food items for this order
+        val foodList = mutableListOf<Food>()
 
         // Iterate over the food items in the adapter to retrieve their names and quantities
-        val foodList = mutableListOf<Food>()
         val adapter = binding.recyclerView.adapter as FoodAdapter
         for (food in adapter.foodList) {
             if (food.quantity > 0) {
-                foodList.add(Food(food.name,food.quantity))
-                val order = Order(tableNumber, food.name, food.quantity)
-                orderRef.push().setValue(order)
+                foodList.add(Food(food.name, food.quantity))
             }
         }
+
+        // Create the order object with the key, table number, and the list of food items
+        val order = Order(key, tableNumber, foodList)
+        orderRef.child(key).setValue(order)
 
         // Launch the FinalActivity and pass the table number and food list as extras
         val intent = Intent(this, FinalActivity::class.java)
         intent.putParcelableArrayListExtra("food_list", ArrayList(foodList))
         startActivity(intent)
     }
+
 
     private fun buttonPressedDownShowList() {
         val layoutManager = LinearLayoutManager(this)

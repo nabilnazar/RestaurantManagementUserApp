@@ -1,3 +1,3 @@
 package com.meghamlabs.restaurantmanagementuserapp
 
-data class Order(val tableNumber: Int = 0, val foodName: String?= null , val quantity: Int = 0)
+data class Order( val id: String= "",val tableNumber: Int = 0, val food: MutableList<Food>)

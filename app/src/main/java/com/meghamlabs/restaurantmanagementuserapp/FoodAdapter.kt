@@ -30,15 +30,10 @@ class FoodAdapter(var foodList: List<Food>, var totalQuantityListener: TotalQuan
     override fun onBindViewHolder(holder: FoodViewHolder, position: Int) {
         val food = foodList[position]
 
-        var flag = 0
-
         holder.foodNameTextView.text = food.name
         holder.qtyTextView.text = food.quantity.toString()
 
         holder.addQtyButton.setOnClickListener {
-            if(flag == 0)
-            {food.orderedQty++}
-            flag = 1
             food.quantity++
             holder.qtyTextView.text = food.quantity.toString()
             updateTotalQuantity()
